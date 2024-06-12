@@ -169,3 +169,83 @@ void flager(cell tab[LONGUEUR][LARGEUR], int x, int y)
     tab[x][y].flag = 1;
 }
 
+
+void copieList(coo tab1[150], coo tab2[150])
+{	
+	for(int i = 0; i < 150; i++){
+		tab1[i] = tab2[i];
+	}
+}
+
+void revealer(cell tab[LONGUEUR][LARGEUR], int x, int y) {
+    tab[x][y].revealed = 1;
+    coo tab1[150];
+    tab1[0].x = x;
+    tab1[0].y = y;
+    int nbrVoisin = 1;
+
+    while (nbrVoisin > 0) {
+        coo tab2[150];
+        int indice = 0;
+
+        for (int i = 0; i < nbrVoisin; i++) {
+            int cx = tab1[i].x;
+            int cy = tab1[i].y;
+
+            if (tab[cx][cy].number == 0) {
+                if (cx-1 > 0 && cy-1 > 0 && tab[cx-1][cy-1].revealed == 0) {
+                    tab[cx-1][cy-1].revealed = 1;
+                    tab2[indice].x = cx-1;
+                    tab2[indice].y = cy-1;
+                    indice++;
+                }
+                if (cy-1 > 0 && tab[cx][cy-1].revealed == 0) {
+                    tab[cx][cy-1].revealed = 1;
+                    tab2[indice].x = cx;
+                    tab2[indice].y = cy-1;
+                    indice++;
+                }
+                if (cx+1 < LONGUEUR-1 && cy-1 > 0 && tab[cx+1][cy-1].revealed == 0) {
+                    tab[cx+1][cy-1].revealed = 1;
+                    tab2[indice].x = cx+1;
+                    tab2[indice].y = cy-1;
+                    indice++;
+                }
+                if (cx-1 > 0 && tab[cx-1][cy].revealed == 0) {
+                    tab[cx-1][cy].revealed = 1;
+                    tab2[indice].x = cx-1;
+                    tab2[indice].y = cy;
+                    indice++;
+                }
+                if (cx+1 < LONGUEUR-1 && tab[cx+1][cy].revealed == 0) {
+                    tab[cx+1][cy].revealed = 1;
+                    tab2[indice].x = cx+1;
+                    tab2[indice].y = cy;
+                    indice++;
+                }
+                if (cx-1 > 0 && cy+1 < LARGEUR-1 && tab[cx-1][cy+1].revealed == 0) {
+                    tab[cx-1][cy+1].revealed = 1;
+                    tab2[indice].x = cx-1;
+                    tab2[indice].y = cy+1;
+                    indice++;
+                }
+                if (cy+1 < LARGEUR-1 && tab[cx][cy+1].revealed == 0) {
+                    tab[cx][cy+1].revealed = 1;
+                    tab2[indice].x = cx;
+                    tab2[indice].y = cy+1;
+                    indice++;
+                }
+                if (cx+1 < LONGUEUR-1 && cy+1 < LARGEUR-1 && tab[cx+1][cy+1].revealed == 0) {
+                    tab[cx+1][cy+1].revealed = 1;
+                    tab2[indice].x = cx+1;
+                    tab2[indice].y = cy+1;
+                    indice++;
+                }
+            }
+        }
+
+        nbrVoisin = indice;
+        copieList(tab1, tab2);
+    }
+}
+
